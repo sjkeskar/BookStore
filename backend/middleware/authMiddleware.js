@@ -20,6 +20,7 @@ const protect = asyncHandler(async (req, res, next) => {
 				} else if (result) {
 					result = JSON.parse(JSON.stringify(result))[0];
 					if(result.UserID === decoded.id){
+						req.user = result
 						next();
 					}else{
 						console.log("Multiple accounts login detected")
