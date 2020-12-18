@@ -13,9 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { listBookDetails } from "../actions/bookActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import { addToCart } from "../actions/cartActions";
 
 const BookScreen = ({ history, match }) => {
-	const [qty, setQty] = useState(1);
+	const [Qty, setQty] = useState(1);
+	const [PriceID, setId] = useState(0);
 	const dispatch = useDispatch();
 	const [type, setType] = useState("");
 	const [price, setPrice] = useState(0);
@@ -46,6 +48,7 @@ const BookScreen = ({ history, match }) => {
 					setDesc(bk.Desciption);
 					setName(bk.Name);
 					setImage(bk.Image);
+					setId(bk.PriceID);
 				}
 			});
 		} else if (book) {
@@ -63,10 +66,11 @@ const BookScreen = ({ history, match }) => {
 		}
 	}, [type, setType, book]);
 	const addToCartHandler = () => {
-		if(userInfo){
-			history.push(`/cart/${match.params.id}?qty=${qty}`);
-		}else{
-			setMessage("You need to LogIn First.")
+		if (userInfo) {
+			dispatch(addToCart(PriceID, Qty));
+			history.push(`/cart`);
+		} else {
+			setMessage("You need to LogIn First.");
 		}
 	};
 	return (
@@ -100,7 +104,9 @@ const BookScreen = ({ history, match }) => {
 							<ListGroup variant="flush">
 								<ListGroup.Item>
 									<Row>
-										<Col><b>Price</b></Col>
+										<Col>
+											<b>Price</b>
+										</Col>
 										<Col>
 											<strong>{price} Rupees</strong>
 										</Col>
@@ -140,7 +146,7 @@ const BookScreen = ({ history, match }) => {
 											<Col>
 												<Form.Control
 													as="select"
-													value={qty}
+													value={Qty}
 													onChange={(e) => setQty(e.target.value)}
 												>
 													{[...Array(3).keys()].map((x) => (
