@@ -3,12 +3,16 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { bookDetailsReducer, bookListReducer } from "./reducers/bookReducer";
 import { userLoginReducer, userRegisterReducer } from "./reducers/userReducer";
+import { getCartBooksReducer, removeCartBookReducer, updateQuantityReducer } from "./reducers/cartReducer";
 
 const reducer = combineReducers({
 	bookList: bookListReducer,
 	bookDetails: bookDetailsReducer,
 	userLogin: userLoginReducer,
 	userRegister: userRegisterReducer,
+	getCartBooks: getCartBooksReducer,
+	updateQuantity: updateQuantityReducer,
+	removeCartBook: removeCartBookReducer
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
@@ -17,6 +21,7 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
 
 const initialState = {
 	userLogin: { userInfo: userInfoFromStorage },
+	getCartBooks: { cartItems: [] },
 };
 
 const middleware = [thunk];
