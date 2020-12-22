@@ -8,23 +8,31 @@ import BookScreen from "./screens/BookScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import CartScreen from "./screens/CartScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import AddressScreen from "./screens/AddressScreen";
+import NewAddressScreen from "./screens/NewAddressScreen";
+import ShippingScreen from "./screens/ShippingScreen";
 
 function App() {
-  return (
+	return (
 		<Router>
 			<Header />
 			<main className="py-3">
 				<Container>
-					<Route path="/" component={HomeScreen} exact/>
+					<Route path="/" component={HomeScreen} exact />
 					<Route path="/login" component={LoginScreen} />
+					<Route path="/profile" component={ProfileScreen} />
+					<Route path="/shipping" component={ShippingScreen} />
+					<Route path="/myaddress" component={AddressScreen} />
+					<Route path="/newaddress" component={NewAddressScreen} />
 					<Route path="/register" component={RegisterScreen} />
 					<Route path="/cart" component={CartScreen} />
-					<Route path="/book/:id" component={BookScreen}/>
+					<Route path="/book/:id" component={BookScreen} />
 				</Container>
 			</main>
 			<Footer />
 		</Router>
-  );
+	);
 }
 
 export default App;
