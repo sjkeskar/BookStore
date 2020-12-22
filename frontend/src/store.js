@@ -2,8 +2,22 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { bookDetailsReducer, bookListReducer } from "./reducers/bookReducer";
-import { userLoginReducer, userRegisterReducer } from "./reducers/userReducer";
-import { getCartBooksReducer, removeCartBookReducer, updateQuantityReducer } from "./reducers/cartReducer";
+import {
+	updateProfileReducer,
+	userDetailsReducer,
+	userLoginReducer,
+	userRegisterReducer,
+} from "./reducers/userReducer";
+import {
+	getCartBooksReducer,
+	removeCartBookReducer,
+	updateQuantityReducer,
+} from "./reducers/cartReducer";
+import {
+	addAddressReducer,
+	getAllAddressReducer,
+	getOneAddressReducer,
+} from "./reducers/addressReducer";
 
 const reducer = combineReducers({
 	bookList: bookListReducer,
@@ -12,7 +26,12 @@ const reducer = combineReducers({
 	userRegister: userRegisterReducer,
 	getCartBooks: getCartBooksReducer,
 	updateQuantity: updateQuantityReducer,
-	removeCartBook: removeCartBookReducer
+	removeCartBook: removeCartBookReducer,
+	userDetails: userDetailsReducer,
+	userUpdateProfile: updateProfileReducer,
+	getAllAddress: getAllAddressReducer,
+	getOneAddress: getOneAddressReducer,
+	addAddress: addAddressReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
