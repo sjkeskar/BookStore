@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 
 const Address = ({ address }) => {
-	console.log(address.Default);
+	address.default = address.default === "true" ? true : false;
 	return (
 		<Card className="my-3 p-3 ">
 			<Card.Body>
