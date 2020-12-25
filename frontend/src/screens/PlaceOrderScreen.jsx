@@ -30,6 +30,7 @@ const PlaceOrderScreen = ({ history }) => {
 		Number(cartItems.taxPrice)
 	).toFixed(2);
 	const placeOrderHandler = () => {
+		const x = new Date();
 		dispatch(
 			createOrder({
 				AddID: address.AddID,
@@ -37,6 +38,7 @@ const PlaceOrderScreen = ({ history }) => {
 				TotalPrice: cartItems.totalPrice,
 				TaxPrice: cartItems.taxPrice,
 				ShipPrice: cartItems.shippingPrice,
+				placeDate: x.toISOString().slice(1, 10),
 			})
 		);
 	};
