@@ -4,17 +4,31 @@ import db from "../config/db.js";
 //@desc     Get all orders
 //@route    GET /api/order
 //@access   Private
-export const getOrders = asyncHandler(async (req, res) => {
+export const getOrders = asyncHandler((req, res) => {
 	const { UserID } = req.user;
-
-	const sql = `SELECT * FROM ordertable,orderinfo WHERE ordertable.OrderID=orderinfo.OrderID AND ordertable.UserID=${UserID}`;
-	db.query(sql, (error, result) => {
+	const sql1 = `SELECT * FROM ordertable WHERE UserID=?`;
+	const sql2 = `SELECT orderinfo.Qty,price.Price,price.Edition,price.Type,books.Name,books.Author,books.Genre,books.Image FROM orderinfo,price,books WHERE orderinfo.PriceID=price.PriceID AND books.BookID=price.BookID AND orderinfo.OrderID=?`;
+	db.query(sql1, [UserID], (error, result) => {
 		if (error) {
 			res.status(500);
 			throw new Error(error);
 		} else {
-			res.status(200);
-			res.send(result);
+			result = JSON.parse(JSON.stringify(result));
+			result.forEach((re, index) => {
+				db.query(sql2, [re.OrderID], (err, rest) => {
+					if (err) {
+						res.status(500);
+						throw new Error(error);
+					} else {
+						rest = JSON.parse(JSON.stringify(rest));
+						re.books = rest;
+						if (index === result.length - 1) {
+							res.status(200);
+							res.send(result);
+						}
+					}
+				});
+			});
 		}
 	});
 });
@@ -24,9 +38,16 @@ export const getOrders = asyncHandler(async (req, res) => {
 //@access   Private
 export const addOrder = asyncHandler(async (req, res) => {
 	const OrderID = Math.floor(Math.random() * 1000);
-	const { AddID, PaymentMethod, TotalPrice, TaxPrice, ShipPrice } = req.body;
+	const {
+		AddID,
+		PaymentMethod,
+		TotalPrice,
+		TaxPrice,
+		ShipPrice,
+		placeDate,
+	} = req.body;
 	const { UserID } = req.user;
-	const sql = `INSERT INTO ordertable(OrderID,UserID,AddID,payment,totalprice,taxprice,shipprice) VALUES(${OrderID},${UserID},${AddID},'${PaymentMethod}',${TotalPrice},${TaxPrice},${ShipPrice});`;
+	const sql = `INSERT INTO ordertable(OrderID,UserID,AddID,payment,totalprice,taxprice,shipprice,dateplaced) VALUES(${OrderID},${UserID},${AddID},'${PaymentMethod}',${TotalPrice},${TaxPrice},${ShipPrice},${placeDate});`;
 	db.query(sql, async (error, result) => {
 		if (error) {
 			res.status(501);
