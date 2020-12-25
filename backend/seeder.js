@@ -9,7 +9,7 @@ db.connect(() => console.log(`connected to DB`));
 
 const addBook = async () => {
 	books.forEach((book) => {
-		const sql = `INSERT INTO books VALUES( ${book.Bookid}, '${book.name}', '${book.desc}', '${book.author}', '${book.genre}' )`;
+		const sql = `INSERT INTO books VALUES( ${book.Bookid}, '${book.name}', '${book.desc}', '${book.author}', '${book.genre}','/image/${book.Bookid}.jpg' )`;
 		db.query(sql, (error, result) => {
 			if (error) {
 				console.log(error);
@@ -22,7 +22,12 @@ const addBook = async () => {
 
 const addPrice = async () => {
 	prices.forEach((price) => {
-		const sql = `INSERT INTO price VALUES( ${price.Priceid}, ${price.Bookid}, ${price.price}, ${price.stock}, '${price.edition}', '${price.publisher}', '${price.type}', TO_DATE('${price.printeddate}','DD-MM-YYYY'), ${price.discount})`;
+		const x = new Date();
+		const sql = `INSERT INTO price VALUES( ${price.Priceid}, ${price.Bookid}, ${
+			price.price
+		}, ${price.stock}, '${price.edition}', '${price.publisher}', '${
+			price.type
+		}', '${x.toISOString().slice(0, 10)}', ${price.discount})`;
 		db.query(sql, (error, result) => {
 			if (error) {
 				console.log(error);
@@ -51,6 +56,6 @@ const addImage = async () => {
 
 if (process.argv[2] === "-b") {
 	addBook();
-} else {
+} else if (process.argv[2] === "-p") {
 	addPrice();
 }
