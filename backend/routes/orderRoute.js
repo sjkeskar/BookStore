@@ -7,6 +7,6 @@ import {
 	infoexch,
 } from "../controller/ordercontroller.js";
 
-router.route("/").post(protect, addOrder).get(protect, getOrders).put(infoexch);
+router.route("/").post(protect, addOrder).get(protect, getOrders);
 
 export default router;
