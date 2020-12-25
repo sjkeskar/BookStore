@@ -16,7 +16,7 @@ const AddressScreen = () => {
 	}, [dispatch]);
 	return (
 		<>
-			<h1>Your Address</h1>
+			<h1>Your Addresses</h1>
 			<p> </p>
 			<Link to={`/`}>
 				<Button>Go Back</Button>
