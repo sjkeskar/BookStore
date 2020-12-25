@@ -1,7 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { bookDetailsReducer, bookListReducer } from "./reducers/bookReducer";
+import {
+	bookDetailsReducer,
+	bookListReducer,
+	oneBookReducer,
+} from "./reducers/bookReducer";
 import {
 	updateProfileReducer,
 	userDetailsReducer,
@@ -18,7 +22,7 @@ import {
 	getAllAddressReducer,
 	getOneAddressReducer,
 } from "./reducers/addressReducer";
-import { newOrderReducer } from "./reducers/orderReducer";
+import { getMyOrdersReducer, newOrderReducer } from "./reducers/orderReducer";
 
 const reducer = combineReducers({
 	bookList: bookListReducer,
@@ -34,6 +38,8 @@ const reducer = combineReducers({
 	getOneAddress: getOneAddressReducer,
 	addAddress: addAddressReducer,
 	newOrder: newOrderReducer,
+	getMyOrders: getMyOrdersReducer,
+	oneBook: oneBookReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
