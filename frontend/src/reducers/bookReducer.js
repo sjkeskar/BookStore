@@ -1,5 +1,8 @@
 import {
 	BOOK_DETAILS_FAIL,
+	BOOK_DETAILS_ONE_FAIL,
+	BOOK_DETAILS_ONE_REQUEST,
+	BOOK_DETAILS_ONE_SUCCESS,
 	BOOK_DETAILS_REQUEST,
 	BOOK_DETAILS_SUCCESS,
 	BOOK_LIST_FAIL,
@@ -28,6 +31,19 @@ export const bookDetailsReducer = (state = { book: [] }, action) => {
 			return { loading: false, book: action.payload };
 		case BOOK_DETAILS_FAIL:
 			return { loading: false, error: action.payload };
+		default:
+			return state;
+	}
+};
+
+export const oneBookReducer = (state = { onebook: {} }, action) => {
+	switch (action.type) {
+		case BOOK_DETAILS_ONE_REQUEST:
+			return { loading: true };
+		case BOOK_DETAILS_ONE_SUCCESS:
+			return { loading: false, onebook: action.payload };
+		case BOOK_DETAILS_ONE_FAIL:
+			return { loading: false, error: action.paload };
 		default:
 			return state;
 	}
