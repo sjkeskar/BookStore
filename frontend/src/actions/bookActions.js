@@ -1,5 +1,8 @@
 import {
 	BOOK_DETAILS_FAIL,
+	BOOK_DETAILS_ONE_FAIL,
+	BOOK_DETAILS_ONE_REQUEST,
+	BOOK_DETAILS_ONE_SUCCESS,
 	BOOK_DETAILS_REQUEST,
 	BOOK_DETAILS_SUCCESS,
 	BOOK_LIST_FAIL,
@@ -14,6 +17,7 @@ export const listBooks = () => async (dispatch) => {
 		dispatch({ type: BOOK_LIST_REQUEST });
 		const { data } = await axios.get(`/api/books`);
 		dispatch({ type: BOOK_LIST_SUCCESS, payload: data });
+		console.log(data);
 	} catch (error) {
 		dispatch({
 			type: BOOK_LIST_FAIL,
@@ -41,3 +45,18 @@ export const listBookDetails = (id) => async (dispatch) => {
 	}
 };
 
+export const getoneBook = (id) => async (dispatch) => {
+	try {
+		dispatch({ type: BOOK_DETAILS_ONE_REQUEST });
+		const { data } = await axios.get(`/api/books/price/${id}`);
+		dispatch({ type: BOOK_DETAILS_ONE_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({
+			type: BOOK_DETAILS_ONE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
