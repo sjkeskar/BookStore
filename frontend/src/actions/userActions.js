@@ -35,7 +35,7 @@ export const login = (EmailID, Password) => async (dispatch) => {
 			type: USER_LOGIN_SUCCESS,
 			payload: data,
 		});
-		console.log(data)
+		console.log(data);
 		localStorage.setItem("userInfo", JSON.stringify(data));
 	} catch (error) {
 		dispatch({
@@ -126,7 +126,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
-		const { data } = await axios.post(`/api/users`, user, config);
+		await axios.post(`/api/users`, user, config);
 		dispatch({ type: USER_UPDATE_SUCCESS });
 	} catch (error) {
 		dispatch({
