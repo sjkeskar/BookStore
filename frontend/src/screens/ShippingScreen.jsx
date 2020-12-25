@@ -12,15 +12,23 @@ const ShippingScreen = ({ history }) => {
 	const dispatch = useDispatch();
 	const getAllAddress = useSelector((state) => state.getAllAddress);
 	const { loading, addresses, error } = getAllAddress;
-	const [AddID, setAddID] = useState(null);
+	const [AddID, setAddID] = useState(0);
 	const [message, setMessage] = useState(null);
+	const adds = localStorage.getItem("Address")
+		? JSON.parse(localStorage.getItem("Address"))
+		: { AddID: 0 };
 	useEffect(() => {
 		dispatch(allAddress());
+		if (adds) {
+			setAddID(Number(adds.AddID));
+		}
 	}, [dispatch]);
 	const SubmitHandler = (e) => {
 		e.preventDefault();
 		if (AddID) {
-			history.push(`/payment?Add=${AddID}`);
+			let addr = addresses.find((ad) => ad.AddID === AddID);
+			localStorage.setItem("Address", JSON.stringify(addr));
+			history.push(`/payment`);
 		} else {
 			setMessage("Please select an address to deliver the product.");
 		}
@@ -46,11 +54,11 @@ const ShippingScreen = ({ history }) => {
 								<Col md={1}>
 									<Form.Check
 										type="radio"
-										onSelect={(e) => {
-											console.log(e);
-											setAddID(add.AddID);
-											console.log(AddID);
+										value={add.AddID}
+										onChange={(e) => {
+											setAddID(Number(e.target.value));
 										}}
+										checked={AddID === add.AddID ? true : false}
 									></Form.Check>
 								</Col>
 								<Col md={11}>
