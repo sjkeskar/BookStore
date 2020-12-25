@@ -11,7 +11,11 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
-import { getCartItems, removeFromCart, updateQty } from "../actions/cartActions";
+import {
+	getCartItems,
+	removeFromCart,
+	updateQty,
+} from "../actions/cartActions";
 import Loader from "../components/Loader";
 
 const CartScreen = ({ match, location, history }) => {
@@ -29,6 +33,9 @@ const CartScreen = ({ match, location, history }) => {
 	};
 	return (
 		<>
+			<Link className="btn btn-light my-3" to="/">
+				Go Back
+			</Link>
 			{loading ? (
 				<Loader />
 			) : error ? (
