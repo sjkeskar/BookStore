@@ -18,6 +18,7 @@ import {
 	getAllAddressReducer,
 	getOneAddressReducer,
 } from "./reducers/addressReducer";
+import { newOrderReducer } from "./reducers/orderReducer";
 
 const reducer = combineReducers({
 	bookList: bookListReducer,
@@ -32,6 +33,7 @@ const reducer = combineReducers({
 	getAllAddress: getAllAddressReducer,
 	getOneAddress: getOneAddressReducer,
 	addAddress: addAddressReducer,
+	newOrder: newOrderReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
