@@ -2,15 +2,22 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
+	addBookReducer,
+	addEditionReducer,
 	bookDetailsReducer,
 	bookListReducer,
+	deleteBookReducer,
+	deleteEditionReducer,
 	oneBookReducer,
 } from "./reducers/bookReducer";
 import {
+	deleteProfileReducer,
 	updateProfileReducer,
 	userDetailsReducer,
 	userLoginReducer,
 	userRegisterReducer,
+	listAllUserReducer,
+	userDetailsAdminReducer,
 } from "./reducers/userReducer";
 import {
 	getCartBooksReducer,
@@ -21,14 +28,30 @@ import {
 	addAddressReducer,
 	getAllAddressReducer,
 	getOneAddressReducer,
+	updateUserAddressReducer,
 } from "./reducers/addressReducer";
-import { getMyOrdersReducer, newOrderReducer } from "./reducers/orderReducer";
+import {
+	getAllOrderReducer,
+	getMyOrdersReducer,
+	getOneOrderReducer,
+	newOrderReducer,
+	orderDeliverReducer,
+	orderPayReducer,
+} from "./reducers/orderReducer";
 
 const reducer = combineReducers({
 	bookList: bookListReducer,
 	bookDetails: bookDetailsReducer,
+	oneBook: oneBookReducer,
+	deleteBook: deleteBookReducer,
+	addBook: addBookReducer,
+	addEdition: addEditionReducer,
+	deleteEdition: deleteEditionReducer,
 	userLogin: userLoginReducer,
 	userRegister: userRegisterReducer,
+	deleteProfile: deleteProfileReducer,
+	listAllUser: listAllUserReducer,
+	userDetailsAdmin: userDetailsAdminReducer,
 	getCartBooks: getCartBooksReducer,
 	updateQuantity: updateQuantityReducer,
 	removeCartBook: removeCartBookReducer,
@@ -37,9 +60,13 @@ const reducer = combineReducers({
 	getAllAddress: getAllAddressReducer,
 	getOneAddress: getOneAddressReducer,
 	addAddress: addAddressReducer,
+	updateUserAddress: updateUserAddressReducer,
 	newOrder: newOrderReducer,
 	getMyOrders: getMyOrdersReducer,
-	oneBook: oneBookReducer,
+	getOneOrder: getOneOrderReducer,
+	getAllOrder: getAllOrderReducer,
+	orderDeliver: orderDeliverReducer,
+	orderPay: orderPayReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
