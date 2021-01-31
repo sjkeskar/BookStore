@@ -15,6 +15,14 @@ import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
+import OneOrderScreen from "./screens/OneOrderScreen";
+import UserListScreen from "./screens/UserListScreen";
+import UserEditScreen from "./screens/UserEditScreen";
+import OrderListScreen from "./screens/OrderListScreen";
+import BookListScreen from "./screens/BookListScreen";
+import EditionListScreen from "./screens/EditionListScreen";
+import NewBookScreen from "./screens/NewBookScreen";
+import NewEditionScreen from "./screens/NewEditionScreen";
 
 function App() {
 	return (
@@ -25,7 +33,11 @@ function App() {
 					<Route path="/" component={HomeScreen} exact />
 					<Route path="/login" component={LoginScreen} />
 					<Route path="/profile" component={ProfileScreen} />
-					<Route path="/order" component={OrderScreen} />
+					<Route path="/admin/userlist" component={UserListScreen} />
+					<Route path="/admin/user/:id/edit" component={UserEditScreen} />
+					<Route path="/order/:id" component={OneOrderScreen} />
+					<Route path="/order" component={OrderScreen} exact />
+					<Route path="/admin/orderlist" component={OrderListScreen} />
 					<Route path="/shipping" component={ShippingScreen} />
 					<Route path="/payment" component={PaymentScreen} />
 					<Route path="/placeorder" component={PlaceOrderScreen} />
@@ -33,6 +45,18 @@ function App() {
 					<Route path="/newaddress" component={NewAddressScreen} />
 					<Route path="/register" component={RegisterScreen} />
 					<Route path="/cart" component={CartScreen} />
+					<Route path="/admin/booklist" component={BookListScreen} exact />
+					<Route path="/admin/booklist/new" component={NewBookScreen} exact />
+					<Route
+						path="/admin/editionlist/:id"
+						component={EditionListScreen}
+						exact
+					/>
+					<Route
+						path="/admin/edition/new/:id"
+						component={NewEditionScreen}
+						exact
+					/>
 					<Route path="/book/:id" component={BookScreen} />
 				</Container>
 			</main>
