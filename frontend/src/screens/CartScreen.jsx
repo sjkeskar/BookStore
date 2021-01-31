@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
 	Row,
@@ -18,13 +18,20 @@ import {
 } from "../actions/cartActions";
 import Loader from "../components/Loader";
 
-const CartScreen = ({ match, location, history }) => {
+const CartScreen = ({ history }) => {
 	const dispatch = useDispatch();
 	const getCartBooks = useSelector((state) => state.getCartBooks);
 	const { loading, cartItems, error } = getCartBooks;
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+	const [message, setMessage] = useState("");
 	useEffect(() => {
-		dispatch(getCartItems());
-	}, [dispatch]);
+		if (!userInfo) {
+			setMessage(`Please Sign In to access your cart items`);
+		} else {
+			dispatch(getCartItems());
+		}
+	}, [dispatch, userInfo]);
 	const removeFromCartHandler = (id) => {
 		dispatch(removeFromCart(id));
 	};
@@ -36,7 +43,9 @@ const CartScreen = ({ match, location, history }) => {
 			<Link className="btn btn-light my-3" to="/">
 				Go Back
 			</Link>
-			{loading ? (
+			{message ? (
+				<Message variant="warning">{message}</Message>
+			) : loading ? (
 				<Loader />
 			) : error ? (
 				<Message variant="danger">{error}</Message>
@@ -60,9 +69,9 @@ const CartScreen = ({ match, location, history }) => {
 												<Image src={item.Image} alt={item.Name} fluid rounded />
 											</Col>
 											<Col md={3}>
-												<Link to={`/product/${item.BookID}`}>{item.Name}</Link>
+												<Link to={`/book/${item.BookID}`}>{item.Name}</Link>
 											</Col>
-											<Col md={2}>{item.Price}</Col>
+											<Col md={2}>₹{item.Price}</Col>
 											<Col md={2}>
 												<Form.Control
 													as="select"
@@ -105,10 +114,12 @@ const CartScreen = ({ match, location, history }) => {
 										Subtotal (
 										{cartItems.reduce((acc, item) => acc + item.Qty, 0)}) items
 									</h2>
-
-									{cartItems
-										.reduce((acc, item) => acc + item.Qty * item.Price, 0)
-										.toFixed(2)}
+									<b>
+										Item Price: ₹
+										{cartItems
+											.reduce((acc, item) => acc + item.Qty * item.Price, 0)
+											.toFixed(2)}
+									</b>
 								</ListGroup.Item>
 								<ListGroup.Item>
 									<Button

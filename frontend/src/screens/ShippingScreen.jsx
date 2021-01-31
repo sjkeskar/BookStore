@@ -44,7 +44,9 @@ const ShippingScreen = ({ history }) => {
 			) : addresses.length === 0 ? (
 				<Message variant="Warning">
 					You have no addresses registered,{" "}
-					<Link to="/newaddress">click here to add address</Link>{" "}
+					<Link to="/newaddress">
+						<strong>click here to add address</strong>
+					</Link>{" "}
 				</Message>
 			) : (
 				<Form onSubmit={SubmitHandler}>
@@ -62,8 +64,8 @@ const ShippingScreen = ({ history }) => {
 									></Form.Check>
 								</Col>
 								<Col md={11}>
-									<Form.Text as="h6">
-										{add.Flatno},{add.Building},{add.Street},{add.Landmark},
+									<Form.Text as="h5">
+										{add.Flatno},{add.Building},{add.Strret},{add.Landmark},
 										{add.Town},{add.District},{add.State},{add.Country},
 										{add.PostalCode}
 									</Form.Text>

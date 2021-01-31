@@ -26,7 +26,7 @@ const LoginScreen = ({ location, history }) => {
 	return (
 		<FormContainer>
 			<h1>Sign In</h1>
-			{error && <Message variant="danger">{error}</Message>}
+			{error && <Message variant="danger">{error.split(" ")[5]==="401" ? "Invalid Password" : "Invalid Email ID"}</Message>}
 			{loading && <Loader />}
 			<Form onSubmit={submitHandler}>
 				<Form.Group controlId="email">

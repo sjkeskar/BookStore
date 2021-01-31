@@ -4,7 +4,11 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "react-bootstrap";
-import { oneAddress, newAddress } from "../actions/addressActions";
+import {
+	oneAddress,
+	newAddress,
+	updateAddress,
+} from "../actions/addressActions";
 
 const NewAddressScreen = ({ location }) => {
 	const dispatch = useDispatch();
@@ -27,6 +31,18 @@ const NewAddressScreen = ({ location }) => {
 		if (id) {
 			if (!address) {
 				dispatch(oneAddress(id));
+				if (address) {
+					setBuilding(address.Building);
+					setStreet(address.Street);
+					setLandmark(address.Landmark);
+					setTown(address.Town);
+					setDistrict(address.District);
+					setstate(address.State);
+					setCountry(address.Country);
+					setdefault(address.default);
+					setFlat(address.Flatno);
+					setPostalCode(address.PostalCode);
+				}
 			}
 			if (address) {
 				setBuilding(address.Building);
@@ -45,26 +61,44 @@ const NewAddressScreen = ({ location }) => {
 
 	const formController = (e) => {
 		e.preventDefault();
-		dispatch(
-			newAddress({
-				Flatno,
-				Building,
-				Street,
-				Landmark,
-				Town,
-				District,
-				State,
-				Country,
-				PostalCode,
-				Default,
-			})
-		);
+		if (id) {
+			dispatch(
+				updateAddress({
+					AddID: id,
+					Flatno,
+					Building,
+					Street,
+					Landmark,
+					Town,
+					District,
+					State,
+					Country,
+					PostalCode,
+					Default,
+				})
+			);
+		} else {
+			dispatch(
+				newAddress({
+					Flatno,
+					Building,
+					Street,
+					Landmark,
+					Town,
+					District,
+					State,
+					Country,
+					PostalCode,
+					Default,
+				})
+			);
+		}
 	};
 	return (
 		<FormContainer>
 			{/* {message && <Message variant="danger">{message}</Message>} */}
 			{erroradd && <Message variant="danger">{erroradd}</Message>}
-			{success && <Message variant="success">Address Addedd</Message>}
+			{success && <Message variant="success">Address Added</Message>}
 			{loadingone || loadingadd ? (
 				<Loader />
 			) : errorone ? (

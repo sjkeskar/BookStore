@@ -38,7 +38,7 @@ const PlaceOrderScreen = ({ history }) => {
 				TotalPrice: cartItems.totalPrice,
 				TaxPrice: cartItems.taxPrice,
 				ShipPrice: cartItems.shippingPrice,
-				placeDate: x.toISOString().slice(1, 10),
+				placeDate: x.toISOString().slice(0, 10),
 			})
 		);
 	};
@@ -46,7 +46,9 @@ const PlaceOrderScreen = ({ history }) => {
 	const { OrderID, success } = newOrder;
 	useEffect(() => {
 		if (success) {
-			history.push(`/order/${OrderID}`);
+			console.log(OrderID);
+			history.push(`/order/${OrderID.OrderID}`);
+			window.location.reload(true);
 		} else {
 			console.log(`Failed to place order`);
 		}
@@ -95,7 +97,7 @@ const PlaceOrderScreen = ({ history }) => {
 													</Link>
 												</Col>
 												<Col md={4}>
-													{item.Qty} x {item.Price} = {item.Qty * item.Price}
+													{item.Qty} x ₹{item.Price} = ₹{item.Qty * item.Price}
 												</Col>
 											</Row>
 										</ListGroup.Item>
@@ -115,25 +117,25 @@ const PlaceOrderScreen = ({ history }) => {
 							<ListGroup.Item>
 								<Row>
 									<Col>Items</Col>
-									<Col>{cartItems.itemsPrice}</Col>
+									<Col>₹{cartItems.itemsPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>Shipping</Col>
-									<Col>{cartItems.shippingPrice}</Col>
+									<Col>₹{cartItems.shippingPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>Tax</Col>
-									<Col>{cartItems.taxPrice}</Col>
+									<Col>₹{cartItems.taxPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>Total</Col>
-									<Col>{cartItems.totalPrice}</Col>
+									<Col>₹{cartItems.totalPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>

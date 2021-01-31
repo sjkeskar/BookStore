@@ -24,6 +24,7 @@ const BookScreen = ({ history, match }) => {
 	const [stock, setStock] = useState(0);
 	const [publisher, setPublisher] = useState("");
 	const [edition, setEdition] = useState("");
+	const [genre, setGenre] = useState("");
 	const [image, setImage] = useState("");
 	const [Name, setName] = useState("");
 	const [author, setAuthor] = useState("");
@@ -48,6 +49,7 @@ const BookScreen = ({ history, match }) => {
 					setDesc(bk.Desciption);
 					setName(bk.Name);
 					setImage(bk.Image);
+					setGenre(bk.Genre);
 					setId(bk.PriceID);
 				}
 			});
@@ -68,9 +70,11 @@ const BookScreen = ({ history, match }) => {
 	const addToCartHandler = () => {
 		if (userInfo) {
 			dispatch(addToCart(PriceID, Qty));
-			history.push(`/cart`);
+			setTimeout(() => {
+				history.push(`/cart`);
+			}, 500);
 		} else {
-			setMessage("You need to LogIn First.");
+			setMessage("You need to Sign In to perform the Action.");
 		}
 	};
 	return (
@@ -94,8 +98,9 @@ const BookScreen = ({ history, match }) => {
 								<h3>{Name}</h3>
 							</ListGroup.Item>
 							<ListGroup.Item>Author: {author}</ListGroup.Item>
-							<ListGroup.Item>Publisher: {publisher}</ListGroup.Item>
+							<ListGroup.Item>Genre: {genre}</ListGroup.Item>
 							<ListGroup.Item>Edition: {edition}</ListGroup.Item>
+							<ListGroup.Item>Publisher: {publisher}</ListGroup.Item>
 							<ListGroup.Item>Description: {desc}</ListGroup.Item>
 						</ListGroup>
 					</Col>
@@ -105,10 +110,10 @@ const BookScreen = ({ history, match }) => {
 								<ListGroup.Item>
 									<Row>
 										<Col>
-											<b>Price</b>
+											<b>Price: </b>
 										</Col>
 										<Col>
-											<strong>{price} Rupees</strong>
+											<strong>₹{price}</strong>
 										</Col>
 									</Row>
 								</ListGroup.Item>
@@ -166,7 +171,7 @@ const BookScreen = ({ history, match }) => {
 										type="button"
 										disabled={stock === 0}
 									>
-										Add to Bag
+										Add to Cart
 									</Button>
 								</ListGroup.Item>
 							</ListGroup>
