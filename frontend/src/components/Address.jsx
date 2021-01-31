@@ -8,7 +8,7 @@ const Address = ({ address }) => {
 	return (
 		<Card className="my-3 p-3 ">
 			<Card.Body>
-				<Link to={`/newaddress?id=${address.AddID}`}>
+				<LinkContainer to={`/newaddress?id=${address.AddID}`}>
 					<Card.Text as="p">
 						{" "}
 						{address.Flatno},{address.Building},{address.Street},
@@ -16,11 +16,11 @@ const Address = ({ address }) => {
 						,{address.Country}.{"  "}
 						PostalCode: {address.PostalCode}
 					</Card.Text>
-				</Link>
-				{address.default ? <h4>Default Address</h4> : ""}
-				<LinkContainer to={`/newaddress?id=${address.AddID}`}>
-					<Button variant="outline-primary">Edit Address</Button>
 				</LinkContainer>
+				{address.default ? <h4>Default Address</h4> : ""}
+				<Link to={`/newaddress?id=${address.AddID}`}>
+					<Button variant="outline-primary">Edit Address</Button>
+				</Link>
 			</Card.Body>
 		</Card>
 	);
