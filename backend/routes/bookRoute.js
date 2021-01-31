@@ -1,10 +1,28 @@
 import express from "express";
-import {addBook, findPriceSpecified, getAllBooks, findBook} from "../controller/bookcontroller.js"
+import {
+	findPriceSpecified,
+	getAllBooks,
+	findBook,
+	createBook,
+	createEdition,
+	getEditions,
+	deleteBook,
+	deleteEdition,
+} from "../controller/bookcontroller.js";
+import { admin, protect } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
-
-router.route("/").get(getAllBooks).post(addBook);
+router.route("/").get(getAllBooks);
 router.route("/:id").get(findBook);
 router.route("/price/:id").get(findPriceSpecified);
+router
+	.route("/admin")
+	.post(protect, admin, createBook)
+	.put(protect, admin, deleteBook);
+router
+	.route("/admin/price")
+	.get(protect, admin, getEditions)
+	.post(protect, admin, createEdition)
+	.put(protect, admin, deleteEdition);
 
 export default router;
