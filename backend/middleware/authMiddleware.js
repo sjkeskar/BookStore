@@ -4,7 +4,6 @@ import db from "../config/db.js";
 
 const protect = asyncHandler(async (req, res, next) => {
 	let token = req.headers.authorization;
-
 	if (
 		req.headers.authorization &&
 		req.headers.authorization.startsWith("Bearer")
@@ -19,11 +18,11 @@ const protect = asyncHandler(async (req, res, next) => {
 					throw new Error("Please Re-login and try again.");
 				} else if (result) {
 					result = JSON.parse(JSON.stringify(result))[0];
-					if(result.UserID === decoded.id){
-						req.user = result
+					if (result.UserID === decoded.id) {
+						req.user = result;
 						next();
-					}else{
-						console.log("Multiple accounts login detected")
+					} else {
+						console.log("Multiple accounts login detected");
 						res.status(401);
 						throw new Error("Not Authorized, token failed");
 					}
@@ -41,4 +40,12 @@ const protect = asyncHandler(async (req, res, next) => {
 	}
 });
 
-export { protect };
+const admin = (req, res, next) => {
+	if (req.user && req.user.isAdmin === "true") {
+		next();
+	} else {
+		res.status(401).send("Not Authorised as an Admin.");
+	}
+};
+
+export { protect, admin };
