@@ -9,6 +9,9 @@ import {
 	USER_ADD_ADDRESS_FAIL,
 	USER_ADD_ADDRESS_REQUEST,
 	USER_ADD_ADDRESS_SUCCESS,
+	USER_UPDATE_ADDRESS_FAIL,
+	USER_UPDATE_ADDRESS_REQUEST,
+	USER_UPDATE_ADDRESS_SUCCESS,
 } from "../constants/addressConstants";
 
 export const allAddress = () => async (dispatch, getState) => {
@@ -86,5 +89,24 @@ export const newAddress = (address) => async (dispatch, getState) => {
 					? error.response.data.message
 					: error.message,
 		});
+	}
+};
+
+export const updateAddress = (address) => async (dispatch, getState) => {
+	try {
+		dispatch({ type: USER_UPDATE_ADDRESS_REQUEST });
+		const {
+			userLogin: { userInfo },
+		} = getState();
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+		await axios.put(`/api/users/add`, address, config);
+		dispatch({ type: USER_UPDATE_ADDRESS_SUCCESS });
+	} catch (error) {
+		dispatch({ type: USER_UPDATE_ADDRESS_FAIL });
 	}
 };
