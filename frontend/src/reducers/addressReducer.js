@@ -8,6 +8,9 @@ import {
 	USER_ADD_ADDRESS_REQUEST,
 	USER_ADD_ADDRESS_SUCCESS,
 	USER_ADD_ADDRESS_FAIL,
+	USER_UPDATE_ADDRESS_FAIL,
+	USER_UPDATE_ADDRESS_SUCCESS,
+	USER_UPDATE_ADDRESS_REQUEST,
 } from "../constants/addressConstants";
 
 export const getAllAddressReducer = (state = { addresses: [] }, action) => {
@@ -46,6 +49,19 @@ export const addAddressReducer = (
 		case USER_ADD_ADDRESS_SUCCESS:
 			return { loading: false, success: true };
 		case USER_ADD_ADDRESS_FAIL:
+			return { loading: false, error: action.payload };
+		default:
+			return state;
+	}
+};
+
+export const updateUserAddressReducer = (state = {}, action) => {
+	switch (action.type) {
+		case USER_UPDATE_ADDRESS_REQUEST:
+			return { loading: true };
+		case USER_UPDATE_ADDRESS_SUCCESS:
+			return { loading: false, success: true };
+		case USER_UPDATE_ADDRESS_FAIL:
 			return { loading: false, error: action.payload };
 		default:
 			return state;
