@@ -45,8 +45,14 @@ function App() {
 					<Route path="/newaddress" component={NewAddressScreen} />
 					<Route path="/register" component={RegisterScreen} />
 					<Route path="/cart" component={CartScreen} />
+					{/* <Route path="/admin/sales" component={SalesScreen} /> */}
 					<Route path="/admin/booklist" component={BookListScreen} exact />
 					<Route path="/admin/booklist/new" component={NewBookScreen} exact />
+					<Route
+						path="/admin/booklist/edit/:id"
+						component={NewBookScreen}
+						exact
+					/>
 					<Route
 						path="/admin/editionlist/:id"
 						component={EditionListScreen}
@@ -54,6 +60,11 @@ function App() {
 					/>
 					<Route
 						path="/admin/edition/new/:id"
+						component={NewEditionScreen}
+						exact
+					/>
+					<Route
+						path="/admin/edition/edit/:id"
 						component={NewEditionScreen}
 						exact
 					/>
