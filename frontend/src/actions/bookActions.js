@@ -84,7 +84,7 @@ export const deleteOneBook = (BookID) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
-		const { data } = await axios.put(`/api/books/admin`, { BookID }, config);
+		await axios.put(`/api/books/admin`, { BookID }, config);
 		dispatch({ type: BOOK_DELETE_SUCCESS });
 	} catch (error) {
 		console.log(`failed...`);
@@ -111,7 +111,7 @@ export const addOneBook = (book) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
-		const { data } = await axios.post(`/api/books/admin`, book, config);
+		await axios.post(`/api/books/admin`, book, config);
 		dispatch({ type: BOOK_ADD_SUCCESS });
 	} catch (error) {
 		dispatch({

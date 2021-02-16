@@ -22,6 +22,7 @@ import {
 	USER_UPDATE_ADMIN_REQUEST,
 	USER_UPDATE_ADMIN_FAIL,
 	USER_UPDATE_ADMIN_SUCCESS,
+	USER_DELETE_SUCCESS,
 } from "../constants/userConstants";
 
 export const login = (EmailID, Password) => async (dispatch) => {
@@ -158,13 +159,12 @@ export const deleteUser = (UserID) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
-		console.log(`deleting...`);
-		const { data } = await axios.post(
+		await axios.post(
 			`/api/users/admin/del`,
 			{ UserID: UserID },
 			config
 		);
-		console.log(data);
+		dispatch({ type: USER_DELETE_SUCCESS });
 	} catch (error) {
 		console.log(error);
 		dispatch({
@@ -277,7 +277,7 @@ export const updateUserAdmin = (user) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
-		const { data } = await axios.put(`/api/users/admin`, user, config);
+		await axios.put(`/api/users/admin`, user, config);
 		dispatch({ type: USER_UPDATE_SUCCESS });
 	} catch (error) {
 		console.log(error);

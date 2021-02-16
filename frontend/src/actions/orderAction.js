@@ -135,7 +135,7 @@ export const setDelivered = (OrderID, datedelivered) => async (
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
-		const { data } = axios.post(
+		axios.post(
 			`/api/order/admin`,
 			{ OrderID, datedelivered },
 			config
