@@ -1,3 +1,4 @@
+import e from "express";
 import asyncHandler from "express-async-handler";
 import db from "../config/db.js";
 
@@ -23,8 +24,7 @@ export const findBook = asyncHandler(async (req, res) => {
 	const sql = `SELECT * FROM price,books WHERE price.BookID=? AND books.BookID=price.BookID`;
 	db.query(sql, [req.params.id], (error, result) => {
 		if (error) {
-			res.status(404);
-			throw new Error(error);
+			res.status(404).send(error);
 		} else {
 			res.status(200);
 			res.send(JSON.parse(JSON.stringify(result)));
@@ -39,8 +39,7 @@ export const findPriceSpecified = asyncHandler(async (req, res) => {
 	const sql = `SELECT * FROM price,books WHERE price.BookID=books.BookID AND PriceID=?`;
 	db.query(sql, [req.params.id], (error, result) => {
 		if (error) {
-			res.status(404);
-			throw new Error(error);
+			res.status(404).send(error);
 		} else {
 			res.status(200);
 			res.send(JSON.parse(JSON.stringify(result)));
@@ -171,6 +170,74 @@ export const getEditions = async (req, res) => {
 		} else {
 			res.status(200);
 			res.send(JSON.parse(JSON.stringify(result)));
+		}
+	});
+};
+
+//@desc     Edit Book Info
+//@route    PATCH /api/books/admin
+//@access   Admin
+export const editBook = async (req, res) => {
+	const sql = `UPDATE books SET Name=?,Desciption=?,Author=?,Genre=? WHERE BookID=?`;
+	const bsql = `SELECT * from books WHERE BookID=?`;
+	db.query(bsql, [req.body.BookID], (error, result) => {
+		if (error) {
+			res.status(500).send(error);
+		} else {
+			result = JSON.parse(JSON.stringify(result))[0];
+			const Name = req.body.Name ? req.body.Name : result.Name;
+			const Desc = req.body.Description
+				? req.body.Description
+				: result.Desciption;
+			const Author = req.body.Author ? req.body.Author : result.Author;
+			const Genre = req.body.Genre ? req.body.Genre : result.Genre;
+			db.query(
+				sql,
+				[Name, Desc, Author, Genre, req.body.BookID],
+				(err, rest) => {
+					if (err) {
+						res.status(500).send(err);
+					} else {
+						res.status(200).send(rest);
+					}
+				}
+			);
+		}
+	});
+};
+
+//@desc     Edit Edition Info
+//@route    PATCH /api/books/admin/price
+//@access   Admin
+export const editEdition = async (req, res) => {
+	const bsql = `SELECT * from price WHERE PriceID=?`;
+	const sql = `UPDATE price SET Price=?,Stock=?,Edition=?,Publisher=?,Type=?,Discount=? WHERE PriceID=?`;
+	db.query(bsql, [req.body.PriceID], (error, result) => {
+		if (error) {
+			console.log(`in bsql`);
+			res.status(500).send(error);
+		} else {
+			result = JSON.parse(JSON.stringify(result))[0];
+			const Price = req.body.Price ? req.body.Price : result.Price;
+			const Stock = req.body.Stock ? req.body.Stock : result.Stock;
+			const Edition = req.body.Edition ? req.body.Edition : result.Edition;
+			const Publisher = req.body.Publisher
+				? req.body.Publisher
+				: result.Publisher;
+			const Type = req.body.Type ? req.body.Type : result.Type;
+			const Discount = req.body.Discount ? req.body.Discount : result.Discount;
+			db.query(
+				sql,
+				[Price, Stock, Edition, Publisher, Type, Discount, req.body.PriceID],
+				(err, rest) => {
+					if (err) {
+						console.log(`in sql`);
+						res.status(500).send(err);
+					} else {
+						res.status(200).send(rest);
+					}
+				}
+			);
 		}
 	});
 };

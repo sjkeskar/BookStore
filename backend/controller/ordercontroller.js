@@ -10,8 +10,7 @@ export const getOrders = asyncHandler((req, res) => {
 	const sql2 = `SELECT orderinfo.Qty,price.Price,price.Edition,price.Type,books.Name,books.Author,books.Genre,books.Image FROM orderinfo,price,books WHERE orderinfo.PriceID=price.PriceID AND books.BookID=price.BookID AND orderinfo.OrderID=?`;
 	db.query(sql1, [UserID], (error, result) => {
 		if (error) {
-			res.status(500);
-			throw new Error(error);
+			res.status(500).send(error);
 		} else {
 			result = JSON.parse(JSON.stringify(result));
 			res.status(200);
@@ -49,8 +48,7 @@ export const addOrder = asyncHandler(async (req, res) => {
 		],
 		async (error, result) => {
 			if (error) {
-				res.status(501);
-				throw new Error(error);
+				res.status(501).send(error);
 			} else {
 				await infoexch(OrderID, UserID);
 				res.status(200);

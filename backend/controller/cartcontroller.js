@@ -10,8 +10,7 @@ export const addBooktoCart = asyncHandler(async (req, res) => {
 	const sql = `INSERT INTO cart VALUES(?,?,?,?)`;
 	db.query(sql, [CartID, PriceID, Qty, UserID], (error, result) => {
 		if (error) {
-			res.status(401);
-			throw new Error("Could not add to Cart");
+			res.status(401).send("Could not add to cart.");
 		} else if (result) {
 			res.status(201).send(result);
 		}
@@ -26,8 +25,7 @@ export const getBooks = asyncHandler(async (req, res) => {
 	const sql = `SELECT * FROM cart,price,books WHERE cart.UserID=? AND cart.PriceID=price.PriceID AND price.BookID=books.BookID`;
 	db.query(sql, [UserID], (error, result) => {
 		if (error) {
-			res.status(401);
-			throw new Error(error);
+			res.status(401).send(error);
 		} else if (result) {
 			res.status(201).send(result);
 		}
@@ -43,8 +41,7 @@ export const delBooks = asyncHandler(async (req, res) => {
 	const sql = `DELETE FROM cart WHERE CartID=? AND UserID=?`;
 	db.query(sql, [CartID, UserID], (error, result) => {
 		if (error) {
-			res.status(401);
-			throw new Error(error);
+			res.status(401).send(error);
 		} else if (result) {
 			res.status(201).send(result);
 		}
@@ -59,8 +56,7 @@ export const updateBooks = asyncHandler(async (req, res) => {
 	const sql = `UPDATE cart SET Qty=? WHERE CartID=?`;
 	db.query(sql, [Qty, CartID], (error, result) => {
 		if (error) {
-			res.status(401);
-			throw new Error(error);
+			res.status(401).send(error);
 		} else if (result) {
 			res.status(201).send(result);
 		}

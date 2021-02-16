@@ -28,8 +28,7 @@ export const getOneAdd = asyncHandler(async (req, res) => {
 	const sql = `SELECT * FROM address WHERE UserID=? AND AddID=?;`;
 	db.query(sql, [UserID, req.params.id], (error, result) => {
 		if (error) {
-			res.status(501);
-			throw new Error(error);
+			res.status(501).send(error);
 		} else {
 			result = JSON.parse(JSON.stringify(result));
 			res.status(200);
@@ -120,8 +119,7 @@ export const updateAdd = asyncHandler(async (req, res) => {
 		],
 		(error, result) => {
 			if (error) {
-				res.status(500);
-				throw new Error(error);
+				res.status(500).send(error);
 			} else {
 				res.status(200);
 				res.send(result);

@@ -168,14 +168,12 @@ export const toggleAdmin = async (req, res) => {
 //@access	Admin
 export const deleteUser = async (req, res) => {
 	const { UserID } = req.body;
-	console.log(req.body);
 	const sql = `DELETE from user WHERE UserID=?`;
 	db.query(sql, [UserID], (error, result) => {
 		if (error) {
 			console.log(error);
 			res.status(500).send(error);
 		} else {
-			console.log(result);
 			res.status(200).send(result);
 		}
 	});
@@ -195,7 +193,6 @@ export const getUserInfoAdmin = asyncHandler(async (req, res) => {
 				console.log(`usercontroller error`);
 				res.status(501).send(error);
 			} else {
-				console.log(result);
 				result = JSON.parse(JSON.stringify(result));
 				res.status(200);
 				res.json(result);
