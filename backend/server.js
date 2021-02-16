@@ -6,6 +6,7 @@ import bookRoute from "./routes/bookRoute.js";
 import userRoute from "./routes/userRoute.js";
 import cartRoute from "./routes/cartRoute.js";
 import orderRoute from "./routes/orderRoute.js";
+import salesRoute from "./routes/salesRoute.js";
 import uploadRoute from "./routes/uploadRoute.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
@@ -19,6 +20,7 @@ app.use("/api/books", bookRoute);
 app.use("/api/users", userRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/order", orderRoute);
+app.use("/api/sales", salesRoute);
 app.use("/api/upload", uploadRoute);
 
 const __dirname = path.resolve();
