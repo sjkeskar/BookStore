@@ -5,7 +5,6 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
 import { OneOrder, payOrder, setDelivered } from "../actions/orderAction";
-import { RESET_ONE_ORDER } from "../constants/orderConstants";
 // import {
 // 	ORDER_PAY_RESET,
 // 	ORDER_DELIVER_RESET,
@@ -32,14 +31,12 @@ const OrderScreen = ({ match, history, location }) => {
 
 	const orderDeliver = useSelector((state) => state.orderDeliver);
 	const {
-		loading: loadingDeliver,
 		success,
 		error: errorDeliver,
 	} = orderDeliver;
 
 	const orderPay = useSelector((state) => state.orderPay);
 	const {
-		loading: loadingPay,
 		success: successPay,
 		error: errorPay,
 	} = orderPay;

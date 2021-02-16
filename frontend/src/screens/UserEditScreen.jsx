@@ -35,7 +35,7 @@ const UserEditScreen = ({ match, history }) => {
 		} else {
 			if (!user) {
 				dispatch(detailOne(userId));
-			} else if (user.UserID != userId) {
+			} else if (user.UserID !== userId) {
 				dispatch({ type: USER_UPDATE_RESET });
 				dispatch(detailOne(userId));
 			} else {

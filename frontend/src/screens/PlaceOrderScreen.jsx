@@ -12,7 +12,6 @@ const PlaceOrderScreen = ({ history }) => {
 	const { loading, cartItems, error } = useSelector(
 		(state) => state.getCartBooks
 	);
-	const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 	const address = JSON.parse(localStorage.getItem("Address"));
 	const addDecimals = (num) => {
 		return (Math.round(num * 100) / 100).toFixed(2);

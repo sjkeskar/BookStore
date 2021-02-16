@@ -55,8 +55,26 @@ const BookScreen = ({ history, match }) => {
 			});
 		} else if (book) {
 			console.log(book);
-			let str = "paperback";
-			setType(str);
+			if (type === "") {
+				book.forEach((item) => {
+					setType(item.Type);
+				});
+			}
+
+			book.forEach((bk) => {
+				if (bk.Type === type) {
+					setPrice(bk.Price);
+					setStock(bk.Stock);
+					setPublisher(bk.Publisher);
+					setEdition(bk.Edition);
+				}
+			});
+		}else if(PriceID !== book.PriceID){
+			if (type === "") {
+				book.forEach((item) => {
+					setType(item.Type);
+				});
+			}
 			book.forEach((bk) => {
 				if (bk.Type === type) {
 					setPrice(bk.Price);
@@ -66,7 +84,7 @@ const BookScreen = ({ history, match }) => {
 				}
 			});
 		}
-	}, [type, setType, book]);
+	}, [type, setType, book, PriceID]);
 	const addToCartHandler = () => {
 		if (userInfo) {
 			dispatch(addToCart(PriceID, Qty));

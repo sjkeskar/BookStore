@@ -44,7 +44,7 @@ const NewEditionScreen = ({ match, history }) => {
 				window.location.reload(true);
 			}, 1000);
 		}
-	}, [success]);
+	}, [success, history, match.params.id]);
 
 	return (
 		<>

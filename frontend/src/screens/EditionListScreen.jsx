@@ -30,7 +30,7 @@ const EditionListScreen = ({ history, match }) => {
 		} else {
 			dispatch(listBookDetails(match.params.id));
 		}
-	}, [dispatch, history, userInfo, successDelete]);
+	}, [dispatch, history, userInfo, successDelete, book, match]);
 	const deleteHandler = (id) => {
 		if (window.confirm("Are you sure")) {
 			dispatch(removeEdition(id));

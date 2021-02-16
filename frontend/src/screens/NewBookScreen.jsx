@@ -7,10 +7,8 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { addOneBook } from "../actions/bookActions";
-import { BOOK_ADD_RESET } from "../constants/bookConstants";
 
 const NewBookScreen = ({ match, history }) => {
-	const id = match.params.id;
 	const dispatch = useDispatch();
 
 	const [Name, setName] = useState("");
@@ -26,11 +24,11 @@ const NewBookScreen = ({ match, history }) => {
 	useEffect(() => {
 		if (success) {
 			setTimeout(() => {
-				history.push(`/admin/edition/new`);
+				history.push(`/admin/edition/new/${match.params.id}`);
 				window.location.reload(true);
 			}, 1000);
 		}
-	}, [success]);
+	}, [success, history, match]);
 
 	const uploadFileHandler = async (e) => {
 		const file = e.target.files[0];
