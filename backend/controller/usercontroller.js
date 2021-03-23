@@ -3,51 +3,69 @@ import generateToken from "../config/generateToken.js";
 import db from "../config/db.js";
 import bcrypt from "bcryptjs";
 import matchPassword from "../config/matchPassword.js";
+import validator from "validator";
 
 //@desc     Register new user
 //@route    POST /api/users/register
 //@access   Public
 export const registerUser = asyncHandler(async (req, res) => {
+	let check = true;
 	const UserID = Math.floor(Math.random() * 1000);
 	const { FirstName, LastName, EmailID, PhoneNo, Password } = req.body;
+	if (
+		!validator.isAlpha(FirstName, "en-IN") ||
+		!validator.isAlpha(LastName, "en-IN")
+	) {
+		res.status(400).json({ message: "Enter Correct Name" });
+		check = false;
+	} else if (!validator.isEmail(EmailID)) {
+		res.status(400).json({ message: "Enter Correct Email ID" });
+		check = false;
+	} else if (!validator.isMobilePhone(String(PhoneNo), "en-IN")) {
+		res.status(400).json({ message: "Enter Correct Phone Number" });
+		check = false;
+	}
 	const sql = `SELECT * FROM user WHERE EmailID=? OR PhoneNo=?`;
 	const salt = await bcrypt.genSalt(10);
 	const Pass = await bcrypt.hash(Password, salt);
 	const sql1 = `INSERT INTO user VALUES(?, ?, ?, ?, ?, ?, 'false')`;
-	db.query(sql, [EmailID, PhoneNo], (error, result) => {
-		if (result && result.EmailID === EmailID) {
-			res.status(400).send("User already Exists");
-		} else if (error) {
-			res.status(500).send(error);
-		} else {
-			db.query(
-				sql1,
-				[UserID, FirstName, LastName, EmailID, PhoneNo, Pass],
-				(er, rest) => {
-					if (er) {
-						res.status(400).send(er);
-					} else {
-						db.query(sql, [EmailID, PhoneNo], (error1, result2) => {
-							if (error1) {
-								res.status(500).send(error1);
-							} else {
-								result2 = JSON.parse(JSON.stringify(result2));
-								res.status(201);
-								res.json({
-									UserID: result2[0].UserID,
-									FirstName: result2[0].FirstName,
-									LastName: result2[0].LastName,
-									PhoneNo: result2[0].PhoneNo,
-									isAdmin: result2[0].isAdmin,
-									token: generateToken(result2[0].UserID),
-								});
-							}
-						});
+	if (check == true) {
+		db.query(sql, [EmailID, PhoneNo], (error, result) => {
+			console.log(result);
+			if (result.length > 0) {
+				res.status(400).json({ errormessage: "User already Exists" });
+			} else if (error) {
+				res.status(500).send(error);
+			} else {
+				db.query(
+					sql1,
+					[UserID, FirstName, LastName, EmailID, PhoneNo, Pass],
+					(er, rest) => {
+						if (er) {
+							res.status(400).send(er);
+						} else {
+							db.query(sql, [EmailID, PhoneNo], (error1, result2) => {
+								if (error1) {
+									res.status(500).send(error1);
+								} else {
+									result2 = JSON.parse(JSON.stringify(result2));
+									res.status(201);
+									res.json({
+										UserID: result2[0].UserID,
+										FirstName: result2[0].FirstName,
+										LastName: result2[0].LastName,
+										PhoneNo: result2[0].PhoneNo,
+										isAdmin: result2[0].isAdmin,
+										token: generateToken(result2[0].UserID),
+									});
+								}
+							});
+						}
 					}
-				}
-			);
-		}
-	});
+				);
+			}
+		});
+	}
 });
 
 //@desc     Auth user & get token
@@ -56,8 +74,12 @@ export const registerUser = asyncHandler(async (req, res) => {
 export const logInUser = asyncHandler(async (req, res) => {
 	const { EmailID, Password } = req.body;
 	const sql = `SELECT * FROM user WHERE EmailID=?;`;
+	if (!validator.isEmail(EmailID)) {
+		res.status(400).json({ message: "Enter Correct Email ID" });
+	}
+
 	db.query(sql, [EmailID], async (error, result) => {
-		if (error) {
+		if (result.length == 0) {
 			res.status(500).send(error);
 		} else {
 			result = JSON.parse(JSON.stringify(result))[0];
@@ -90,7 +112,7 @@ export const getUserInfo = asyncHandler(async (req, res) => {
 		[UserID],
 		asyncHandler(async (error, result) => {
 			if (error) {
-				res.status(501).send(error);
+				res.status(501).json({message: "Error deleting User"});
 			} else {
 				result = JSON.parse(JSON.stringify(result));
 				res.status(200);
@@ -124,7 +146,7 @@ export const updateUserInfo = asyncHandler(async (req, res) => {
 		[FirstName, LastName, PhoneNo, EmailID, Password, UserID],
 		asyncHandler(async (error, result) => {
 			if (error) {
-				res.status(501).send(error);
+				res.status(501).json({message:"Error Updating User"});
 			} else {
 				res.status(200);
 				res.json(result);
@@ -140,7 +162,7 @@ export const getAllUser = async (req, res) => {
 	const sql = `SELECT FirstName,LastName,EmailID,PhoneNo,UserID,isAdmin from user`;
 	db.query(sql, (error, result) => {
 		if (error) {
-			res.status(500).send(error);
+			res.status(500).json({message:"Error getting userrs"});
 		} else {
 			res.status(200).send(result);
 		}
@@ -231,7 +253,7 @@ export const updateUser = async (req, res) => {
 				[FirstName, LastName, PhoneNo, EmailID, Password, UserID],
 				(err, rest) => {
 					if (err) {
-						res.status(500).send(err);
+						res.status(500).json({message:"Error updating message", error: err});
 					} else {
 						res.status(200).send(rest);
 					}

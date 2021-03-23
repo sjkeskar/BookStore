@@ -1,5 +1,6 @@
 import e from "express";
 import asyncHandler from "express-async-handler";
+import validator from "validator";
 import db from "../config/db.js";
 
 //@desc     GET all books
@@ -55,7 +56,7 @@ export const deleteBook = async (req, res) => {
 	const { BookID } = req.body;
 	db.query(sql, [BookID], (error, result) => {
 		if (error) {
-			res.status(500).send(error);
+			res.status(500).json({ message: "Error deleting book" });
 		} else {
 			res.status(200).send(result);
 		}
@@ -69,7 +70,7 @@ export const deleteEdition = async (req, res) => {
 	const sql = `DELETE from price WHERE PriceID=?`;
 	db.query(sql, [req.body.PriceID], (error, result) => {
 		if (error) {
-			res.status(500).send(error);
+			res.status(500).json({ message: "Error deleting Edition", error });
 		} else {
 			res.status(200).send(result);
 		}
@@ -85,27 +86,45 @@ export const createBook = async (req, res) => {
 	const { Name, Description, Author, Genre, Image } = req.body;
 	let BookID = Math.floor(Math.random() * 1000000);
 	let tryagain = false;
-	do {
-		db.query(sql1, [BookID], (error, result) => {
-			if (!error) {
-				BookID = Math.floor(Math.random() * 1000000);
-				tryagain = true;
-			} else {
-				tryagain = false;
+	let check = true;
+	if (!validator.isAlphanumeric(Name)) {
+		res.status(400).json({ message: "Enter correct Name" });
+		check = false;
+	} else if (!validator.isAlphanumeric(Author)) {
+		res.status(400).json({ message: "Enter Author name in string" });
+		check = false;
+	} else if (
+		!validator.isAlphanumeric(Description) ||
+		!validator.isAlpha(Genre)
+	) {
+		res
+			.status(400)
+			.json({ message: "Enter correct values in Description and Genre" });
+		check = false;
+	}
+	if (check) {
+		do {
+			db.query(sql1, [BookID], (error, result) => {
+				if (!error) {
+					BookID = Math.floor(Math.random() * 1000000);
+					tryagain = true;
+				} else {
+					tryagain = false;
+				}
+			});
+		} while (tryagain);
+		db.query(
+			sql,
+			[BookID, Name, Description, Author, Genre, Image],
+			(error, result) => {
+				if (error) {
+					res.status(500).send(error);
+				} else {
+					res.status(200).send(result);
+				}
 			}
-		});
-	} while (tryagain);
-	db.query(
-		sql,
-		[BookID, Name, Description, Author, Genre, Image],
-		(error, result) => {
-			if (error) {
-				res.status(500).send(error);
-			} else {
-				res.status(200).send(result);
-			}
-		}
-	);
+		);
+	}
 };
 
 //@desc     Create a new edition to already existing book
@@ -126,37 +145,59 @@ export const createEdition = async (req, res) => {
 	} = req.body;
 	let PriceID = Math.floor(Math.random() * 1000000);
 	let tryagain = false;
-	do {
-		db.query(sql1, [PriceID], (error, result) => {
-			if (!error) {
-				PriceID = Math.floor(Math.random() * 1000000);
-				tryagain = true;
-			} else {
-				tryagain = false;
+	let check = true;
+	if (
+		!validator.isNumeric(BookID) ||
+		!validator.isNumeric(Price) ||
+		!validator.isNumeric(Stock) ||
+		!validator.isNumeric(Discount)
+	) {
+		res
+			.status(400)
+			.json({ message: "Enter Numericals only for Price, Stock and Discount" });
+		check = false;
+	} else if (
+		!validator.isAlphanumeric(Edition) ||
+		!validator.isAlphanumeric(Publisher)
+	) {
+		res
+			.status(400)
+			.json({ message: "Enter Editio and Publisher in String only" });
+		check = false;
+	}
+	if (check) {
+		do {
+			db.query(sql1, [PriceID], (error, result) => {
+				if (!error) {
+					PriceID = Math.floor(Math.random() * 1000000);
+					tryagain = true;
+				} else {
+					tryagain = false;
+				}
+			});
+		} while (tryagain);
+		db.query(
+			sql,
+			[
+				PriceID,
+				BookID,
+				Price,
+				Stock,
+				Edition,
+				Publisher,
+				Type,
+				PrintedDate,
+				Discount,
+			],
+			(error, result) => {
+				if (error) {
+					res.status(500).send(error);
+				} else {
+					res.status(200).send(result);
+				}
 			}
-		});
-	} while (tryagain);
-	db.query(
-		sql,
-		[
-			PriceID,
-			BookID,
-			Price,
-			Stock,
-			Edition,
-			Publisher,
-			Type,
-			PrintedDate,
-			Discount,
-		],
-		(error, result) => {
-			if (error) {
-				res.status(500).send(error);
-			} else {
-				res.status(200).send(result);
-			}
-		}
-	);
+		);
+	}
 };
 
 //@desc     Find the price of a book

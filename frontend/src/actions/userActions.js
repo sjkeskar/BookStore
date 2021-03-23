@@ -159,11 +159,7 @@ export const deleteUser = (UserID) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
-		await axios.post(
-			`/api/users/admin/del`,
-			{ UserID: UserID },
-			config
-		);
+		await axios.post(`/api/users/admin/del`, { UserID: UserID }, config);
 		dispatch({ type: USER_DELETE_SUCCESS });
 	} catch (error) {
 		console.log(error);
