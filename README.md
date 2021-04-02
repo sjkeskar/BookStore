@@ -10,7 +10,7 @@ In the project directory, you can run:
 
 Runs the backend in the development mode.\
 
-### `npm run cient`
+### `npm run client`
 
 Runs the frontend app in developement server.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
